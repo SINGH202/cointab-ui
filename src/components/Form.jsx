@@ -6,6 +6,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
 import "./form.css";
+import axios from "axios";
 const init = {
   weight: "",
   pincode: "",
@@ -14,6 +15,7 @@ const init = {
 
 export const Form = () => {
   const [state, setState] = useState(init);
+  const [res, setRes] = useState("");
   const handleChange = (e) => {
     setState({ ...state, pincode: e.target.value });
   };
@@ -27,9 +29,27 @@ export const Form = () => {
     if (state.weight == "" || state.pincode == "" || state.deliveryType == "") {
       alert("Please provide all info");
     } else {
-      console.log(state);
+      getData(state);
     }
   };
+  function getData({ weight, pincode, deliveryType }) {
+    axios({
+      method: "post",
+      url: "https://cointab-sing202.herokuapp.com/products",
+      data: {
+        weight,
+        pincode,
+        deliveryType,
+      },
+    })
+      .then((res) => {
+        console.log(res.data);
+        setRes(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
   return (
     <div className="formDiv">
       <h2>Coin-Tab</h2>
@@ -55,8 +75,8 @@ export const Form = () => {
           <MenuItem value="">
             <em>None</em>
           </MenuItem>
-          <MenuItem value={"forward"}>Forward</MenuItem>
-          <MenuItem value={"forward&rto"}>Forward & RTO</MenuItem>
+          <MenuItem value={"Forward"}>Forward</MenuItem>
+          <MenuItem value={"Forward & RTO"}>Forward & RTO</MenuItem>
         </Select>
       </FormControl>
       <Button
@@ -66,6 +86,7 @@ export const Form = () => {
       >
         Calculate
       </Button>
+      {res !== "" ? <h1>Result: {res}</h1> : ""}
     </div>
   );
 };
