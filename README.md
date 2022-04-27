@@ -1,3 +1,6 @@
+# Current working
+Currently the software is only working for the weights under 1 kg. In upcomming days I will implement working more than 1kg also.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
